@@ -1,0 +1,26 @@
+# Cache
+f1_cache/
+
+# Outputs
+*.png
+*.pkl
+*.joblib
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# venv
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
