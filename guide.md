@@ -164,6 +164,42 @@ For example, if `Compound_enc` is at the top with a wide spread, tyre compound i
 
 ---
 
+## Why do we remove pit laps?
+
+Laps where the driver enters or exits the pits (`PitInTime` / `PitOutTime` are non-null) are filtered out in `clean_laps()`:
+
+- **In-laps**: The lap time includes pit entry at reduced speed (pit-lane speed limit), making it artificially slow and unrepresentative of on-track pace.
+- **Out-laps**: The lap starts from pit exit so it's not a full flying lap, and tyres are cold, again yielding unrepresentative times.
+
+Including them would inject noise — the model should predict competitive lap pace, not laps distorted by pit procedures.
+
+---
+
+## What is a stint?
+
+A stint is a continuous run of laps on the same set of tyres. When a driver pits and switches to fresh rubber, a new stint begins.
+
+The `add_stint()` function in `src/features.py` detects stint boundaries by tracking `TyreLife`:
+- Laps are sorted by GP → Driver → LapNumber.
+- When `TyreLife` drops between consecutive laps (e.g. 20 → 1), a pit stop occurred and the stint counter increments.
+- Stints are numbered 1, 2, 3, ...
+
+This matters because tyres degrade over a stint — early-stint laps on fresh rubber are faster than late-stint laps on worn tyres.
+
+---
+
+## What is LapFrac?
+
+`LapFrac` normalises the lap number within each race to a [0, 1] range:
+
+```python
+laps["LapFrac"] = (LapNumber - min) / (max - min + 1e-6)
+```
+
+It serves as a **fuel-load proxy**. F1 cars start heavy (~100 kg of fuel) and get ~0.3 s faster per lap as fuel burns off. Early laps → low LapFrac (heavy, slower). Late laps → high LapFrac (light, faster). The `+ 1e-6` prevents division by zero.
+
+---
+
 ## Conventions used in this codebase
 
 | Rule | Why |
