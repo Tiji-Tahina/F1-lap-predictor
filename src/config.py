@@ -1,5 +1,5 @@
 # ── Paths & cache ─────────────────────────────────────────────────────────────
-CACHE_DIR = "./f1_cache"
+CACHE_DIR = "./f1-cache"
 
 # ── Races to load ─────────────────────────────────────────────────────────────
 RACES = [
@@ -32,7 +32,9 @@ KEY_COLS = ["LapTime_s", "Compound", "TyreLife", "LapNumber", "Driver"]
 LAP_TIME_MIN = 60
 LAP_TIME_MAX = 200
 
-# ── XGBoost hyperparameters ──────────────────────────────────────────────────
+# ── XGBoost hype
+# 
+# parameters ──────────────────────────────────────────────────
 MODEL_PARAMS = {
     "n_estimators": 400,
     "max_depth": 5,

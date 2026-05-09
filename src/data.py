@@ -1,5 +1,7 @@
+
+
 import fastf1
-import pandas as pd
+import pandas as pd 
 
 from src.config import CACHE_DIR, KEY_COLS, LAP_TIME_MAX, LAP_TIME_MIN
 
@@ -13,10 +15,12 @@ def load_race(year: int, gp: str) -> pd.DataFrame:
     return laps
 
 
+
 def load_all_races(races: list[tuple[int, str]]) -> pd.DataFrame:
     return pd.concat(
         [load_race(y, gp) for y, gp in races], ignore_index=True
     )
+
 
 
 def clean_laps(all_laps: pd.DataFrame) -> pd.DataFrame:
